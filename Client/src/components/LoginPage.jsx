@@ -1,17 +1,43 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+// Set the base URL for your API
+const BASE_URL = 'http://localhost:5000';
+
 
 const LoginPage = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const navigate = useNavigate();
 
+    const [email , setEmail] = useState();
+    const [password , setPassword] = useState();
+    const handleSubmit = async (event) => {
+        event.preventDefault(); // Prevent default form submission
+        console.log('Email:', email);
+        console.log('Password:', password);
+        try {
+            const response = await axios.post(`${BASE_URL}/api/auth/login`,{email,password})
+            if(response.status === 200){
+                console.log("Successfull Login")
+                navigate('/home')
+            }
+        } catch (error) {
+            console.log(`Error - ${error}`)
+        }
+        // Perform your API call or further processing here
+    };
+
+
     return (
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
             <h1 className="text-2xl font-bold text-blue-600 mb-6">Login</h1>
-            <form className="bg-white p-6 rounded-lg shadow-md w-80">
+            <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-80">
                 <div className="mb-4">
                     <label className="block text-gray-700">Email</label>
                     <input
+                        value={email}
+                        onChange={(e)=>setEmail(e.target.value)}
                         type="email"
                         className="w-full px-3 py-2 border rounded-lg"
                         placeholder="Enter your email"
@@ -22,6 +48,8 @@ const LoginPage = () => {
                     <label className="block text-gray-700">Password</label>
                     <div className="relative">
                         <input
+                            value={password}
+                            onChange={(e)=>setPassword(e.target.value)}
                             type={passwordVisible ? 'text' : 'password'}
                             className="w-full px-3 py-2 border rounded-lg"
                             placeholder="Enter your password"
