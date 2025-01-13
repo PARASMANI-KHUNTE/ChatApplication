@@ -6,7 +6,7 @@ import LoginPage from './components/LoginPage';
 import SignupPage from './components/SignupPage';
 import ForgotPassword from './components/ForgotPassword';
 import OtpPage from './components/OtpPage';
-
+import UserProfile from './components/UserProfile';
 const App = () => {
     return (
         <Router>
@@ -17,6 +17,7 @@ const App = () => {
                     <Route path="/signup" element={<SignupPage />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/otp" element={<OtpPage />} />
+                    <Route path="/home" element={<UserProfile />} />
                 </Routes>
             </div>
         </Router>

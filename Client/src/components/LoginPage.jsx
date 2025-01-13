@@ -1,27 +1,33 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/userSlice';
 // Set the base URL for your API
 const BASE_URL = 'http://localhost:5000';
 
 
 const LoginPage = () => {
+    const dispatch = useDispatch();
     const [passwordVisible, setPasswordVisible] = useState(false);
     const navigate = useNavigate();
 
-    const [email , setEmail] = useState();
-    const [password , setPassword] = useState();
+    const [email , setEmail] = useState("");
+    const [password , setPassword] = useState("");
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent default form submission
         console.log('Email:', email);
         console.log('Password:', password);
         try {
             const response = await axios.post(`${BASE_URL}/api/auth/login`,{email,password})
-            if(response.status === 200){
-                console.log("Successfull Login")
+            if (response.status === 200) {
+                console.log(response.data.token)
+                dispatch(login({ token: response.data.token }));
+                console.log('Login successful');
                 navigate('/home')
-            }
+              } else {
+                console.error('Login failed');
+              }
         } catch (error) {
             console.log(`Error - ${error}`)
         }
