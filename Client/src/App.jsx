@@ -8,6 +8,7 @@ import ForgotPassword from './components/ForgotPassword';
 import OtpPage from './components/OtpPage';
 import UserProfile from './components/UserProfile';
 import ResetPassword from './components/ResetPassword';
+import ChatScreen from './components/ChatScreen';
 const App = () => {
     return (
         <Router>
@@ -20,6 +21,7 @@ const App = () => {
                     <Route path="/otp" element={<OtpPage />} />
                     <Route path="/home" element={<UserProfile />} />
                     <Route path="/reset-password" element={<ResetPassword />} />
+                    <Route path="/chatscreen" element={<ChatScreen />} />
                 </Routes>
             </div>
         </Router>
