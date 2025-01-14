@@ -8,7 +8,7 @@ const Logout = () => {
     dispatch(logout());
   };
 
-  return <button onClick={handleLogout}>Logout</button>;
+  return <button className='rounded border w-20 bg-red-400 text-white p-2 hover:bg-red-500 hover:shadow-md transition' onClick={handleLogout}>Logout</button>;
 };
 
 export default Logout;

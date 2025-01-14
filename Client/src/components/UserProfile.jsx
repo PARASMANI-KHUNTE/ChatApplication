@@ -12,9 +12,9 @@ const UserProfile = () => {
     }
   }, [isAuthenticated, navigate]);
   return (
-    <div>
-      <h1>Welcome, {name}</h1>
-      <p>Email: {email}</p>
+    <div className='p-4 border flex flex-col  items-center gap-3'>
+      <h1 className='font-bold'>Welcome, <span className='text-blue-500'>{name}</span></h1>
+      <p className='font-bold'>Email: <span className='text-blue-500'>{email}</span> </p>
       < Logout />
     </div>
   );
