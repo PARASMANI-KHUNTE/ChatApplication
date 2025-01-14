@@ -17,7 +17,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*", // Replace with your client URL for production
+    origin: "https://chatapplication-client-2zc4.onrender.com", // Replace with your client URL for production
     methods: ["GET", "POST"],
   },
 });
