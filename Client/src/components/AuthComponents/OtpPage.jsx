@@ -15,7 +15,6 @@ const OtpPage = () => {
     const handleSubmitBtn = async (e) => {
         e.preventDefault(); // Fix typo
         try {
-            console.log(userId)
             const response = await axios.post(`${BASE_URL}/api/auth/verify-otp`, { userId, otp });
             if (response.status === 200) { // Check response.status
                 alert("OTP Verified! Create your new password.");

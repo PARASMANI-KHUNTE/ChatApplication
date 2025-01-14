@@ -15,7 +15,7 @@ const ResetPassword = () => {
     const handelSignupBtn = async (e) =>{
         e.preventDefault()
         try {
-            console.log(`userId - ${userId} \n password - ${password}`)
+           
             const response =await axios.put(`${BASE_URL}/api/auth/update-password`,{userId,password})
             if(response.status === 200){
                 alert(`${response.data.message}`)

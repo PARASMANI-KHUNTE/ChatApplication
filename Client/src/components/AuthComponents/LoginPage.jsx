@@ -16,20 +16,18 @@ const LoginPage = () => {
     const [password , setPassword] = useState("");
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent default form submission
-        console.log('Email:', email);
-        console.log('Password:', password);
+     
         try {
             const response = await axios.post(`${BASE_URL}/api/auth/login`,{email,password})
             if (response.status === 200) {
-                console.log(response.data.token)
                 dispatch(login({ token: response.data.token }));
-                console.log('Login successful');
+                alert('Login successful');
                 navigate('/home')
               } else {
                 console.error('Login failed');
               }
         } catch (error) {
-            console.log(`Error - ${error}`)
+            alert(`Error - ${error}`)
         }
         // Perform your API call or further processing here
     };

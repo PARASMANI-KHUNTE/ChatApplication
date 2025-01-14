@@ -21,7 +21,7 @@ const ForgotPassword = () => {
 
             // Check if the token exists
             if (token) {
-                console.log(token);
+          
 
                 // Dispatch action to store token and user ID
                 dispatch(setUserId({ token })); // Ensure token is passed correctly
