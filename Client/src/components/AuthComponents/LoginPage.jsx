@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { login } from '../../redux/userSlice';
 // Set the base URL for your API
-const BASE_URL = 'http://localhost:5000';
+const BASE_URL = 'https://chatapplication-3lfn.onrender.com';
 
 
 const LoginPage = () => {
