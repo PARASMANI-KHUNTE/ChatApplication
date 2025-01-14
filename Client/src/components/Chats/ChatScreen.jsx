@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import RecentChats from "./RecentChats";
 import ChatSection from "./ChatSection";
 
