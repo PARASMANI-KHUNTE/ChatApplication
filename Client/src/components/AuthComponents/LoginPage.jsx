@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { login } from '../redux/userSlice';
+import { login } from '../../redux/userSlice';
 // Set the base URL for your API
 const BASE_URL = 'http://localhost:5000';
 

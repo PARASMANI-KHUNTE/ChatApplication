@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setUserId } from "../redux/otpSlice";
+import { setUserId } from "../../redux/otpSlice";
 
 // Set the base URL for your API
 const BASE_URL = "http://localhost:5000";

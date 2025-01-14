@@ -1,4 +1,4 @@
-import Logout from './Logout';
+import Logout from '../components/AuthComponents/Logout';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
