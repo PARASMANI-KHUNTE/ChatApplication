@@ -118,7 +118,7 @@ router.post('/signup', async (req, res) => {
         await newUser.save();
 
         // Respond with success
-        res.status(201).json({
+        res.status(200).json({
             message: "Successful signup"
         });
     } catch (error) {
@@ -167,6 +167,11 @@ router.post('/login',async(req,res)=>{
 
 })
 
+
+router.post('/forgot-password',async(req,res)=>{
+    const {email} = req.body;
+
+})
 // Routes for Social Login
 // router.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 // router.get("/auth/google/callback", passport.authenticate("google", { failureRedirect: "/" }),
