@@ -19,7 +19,7 @@ const App = () => {
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/otp" element={<OtpPage />} />
                     <Route path="/home" element={<UserProfile />} />
-                    <Route path="/ResetPassword" element={<ResetPassword />} />
+                    <Route path="/reset-password" element={<ResetPassword />} />
                 </Routes>
             </div>
         </Router>

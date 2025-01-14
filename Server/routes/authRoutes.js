@@ -168,51 +168,94 @@ router.post('/login',async(req,res)=>{
 
 })
 
+router.post('/forgot-password', async (req, res) => {
+    const { email } = req.body;
 
-router.post('/forgot-password',async(req,res)=>{
-    const {email} = req.body;
-    const isUser = User.findOne({email});
-    if(!isUser){
-        return res.status(404).json({
-            message : "User Does not exists"
-        })
+    // Validate email input
+    if (!email) {
+        return res.status(400).json({
+            message: "Please Provide Email"
+        });
     }
 
-    await sendOTP(email)
-
-    const token = await generateTokenForPassword(isUser.id)
-    if(!token){
-        console.log("Unable to generate token")
-    }
-    return res.status(200).json({
-        message : `Otp sent successfull to ${email}`,
-        token : token
-    })
-})
-
-
-router.post('/verify-otp',async (req,res)=>{
-    const {userId , otp} = req.body;
-    const user = await User.findById(userId)
-    if(user){
-        const email = user.email
-        const isOtp = await verifyOTP(email,otp)
-        if(isOtp){
-            return res.status(200).json({
-                message : "otp successfully verified"
-            })
-        }else {
-            return res.status(401).json({
-                message : "invalid Otp"
-            })
+    try {
+        // Check if user exists in the database
+        const isUser = await User.findOne({ email }); // Await the database call
+        if (!isUser) {
+            return res.status(404).json({
+                message: "User Does not exist"
+            });
         }
-    }else{
-        return res.status(404).json({
-            message : "User not found"
-        })
-    }
 
-})
+        // Send OTP to the user's email
+        await sendOTP(email);
+        console.log("User ID:", isUser.id);
+
+        // Generate token using the user's ID
+        const token = generateTokenForPassword(isUser.id); // Generate the token synchronously
+
+        if (!token) {
+            console.log("Unable to generate token");
+            return res.status(500).json({
+                message: "Internal Server Error: Unable to generate token"
+            });
+        }
+
+        // Respond with success message and token
+        return res.status(200).json({
+            message: `OTP sent successfully to ${email}`,
+            token: token
+        });
+    } catch (error) {
+        console.error("Error in forgot-password route:", error.message);
+        return res.status(500).json({
+            message: "Internal Server Error"
+        });
+    }
+});
+
+
+router.post('/verify-otp', async (req, res) => {
+    try {
+        const { userId, otp } = req.body;
+
+        // Validate input
+        if (!userId || !otp) {
+            return res.status(400).json({
+                message: "Both userId and OTP are required.",
+            });
+        }
+
+        // Find user by ID
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found.",
+            });
+        }
+
+        const email = user.email;
+
+        // Verify the OTP
+        const isOtpValid = await verifyOTP(email, otp);
+        if (!isOtpValid) {
+            return res.status(401).json({
+                message: "Invalid OTP.",
+            });
+        }
+
+        // OTP is valid
+        return res.status(200).json({
+            message: "OTP successfully verified.",
+        });
+    } catch (error) {
+        console.error("Error verifying OTP:", error.message);
+        return res.status(500).json({
+            message: "An error occurred while verifying the OTP.",
+            error: error.message,
+        });
+    }
+});
 
 router.put('/update-password', async (req, res) => {
     const { userId, password } = req.body;

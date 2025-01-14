@@ -5,7 +5,7 @@ import jwtDecode from 'jwt-decode';
 const token = localStorage.getItem('token');
 let decoded = null;
 
-// Decode token if valid
+// Decode token if it exists
 if (token) {
   try {
     decoded = jwtDecode(token);
@@ -18,33 +18,33 @@ if (token) {
 // Initial state
 const initialState = {
   token: token || '',
-  userId: decoded?.userId || '', // Adjust according to your token payload
+  userId: decoded?.userId || '', // Extract userId from the token payload
 };
 
-// Create slice
-const userSlice = createSlice({
-  name: 'user',
+const otpSlice = createSlice({
+  name: 'otp', // Slice name
   initialState,
   reducers: {
     setUserId: (state, action) => {
       const { token } = action.payload;
       try {
-        const decoded = jwtDecode(token);
-        state.userId = decoded.userId; // Extract userId from the token
-        state.token = token;
+        const decoded = jwtDecode(token); // Decode the token
+        console.log("Decoded Token:", decoded); // Debugging
+        state.userId = decoded.userId || ''; // Extract userId from token
+        console.log("user id - ",state.userId)
+        state.token = token; // Save token
         localStorage.setItem('token', token); // Persist token in localStorage
       } catch (error) {
         console.error("Failed to decode token:", error.message);
       }
     },
     clearUserId: (state) => {
-      state.userId = '';
-      state.token = '';
+      state.userId = ''; // Clear userId
+      state.token = ''; // Clear token
       localStorage.removeItem('token'); // Remove token from localStorage
     },
   },
 });
 
-// Export actions and reducer
-export const { setUserId, clearUserId } = userSlice.actions;
-export default userSlice.reducer;
+export const { setUserId, clearUserId } = otpSlice.actions;
+export default otpSlice.reducer;

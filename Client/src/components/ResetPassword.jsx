@@ -9,12 +9,13 @@ const BASE_URL = 'http://localhost:5000';
 const ResetPassword = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-    const { userId} = useSelector((state) => state.user);
+    const { userId} = useSelector((state) => state.otp);
     const [password , setpassword] = useState('');
     const navigate = useNavigate();
     const handelSignupBtn = async (e) =>{
         e.preventDefault()
         try {
+            console.log(`userId - ${userId} \n password - ${password}`)
             const response =await axios.put(`${BASE_URL}/api/auth/update-password`,{userId,password})
             if(response.status === 200){
                 alert(`${response.data.message}`)
