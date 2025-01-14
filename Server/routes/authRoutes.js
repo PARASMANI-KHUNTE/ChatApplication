@@ -4,7 +4,8 @@ const {hassPassword,VerifyPassword} = require('../utils/hashUtils')
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
 const secretkey = process.env.secretKey
-
+const {generateTokenForPassword} = require('../utils/tokenProvider')
+const { sendOTP, verifyOTP }  = require('../utils/otpProvider')
 // const passport = require("passport");
 // const GoogleStrategy = require("passport-google-oauth20").Strategy;
 // const FacebookStrategy = require("passport-facebook").Strategy;
@@ -170,6 +171,46 @@ router.post('/login',async(req,res)=>{
 
 router.post('/forgot-password',async(req,res)=>{
     const {email} = req.body;
+    const isUser = User.findOne({email});
+    if(!isUser){
+        return res.status(404).json({
+            message : "User Does not exists"
+        })
+    }
+
+    await sendOTP(email)
+
+    const token = await generateTokenForPassword(isUser.id)
+    if(!token){
+        console.log("Unable to generate token")
+    }
+    return res.status(200).json({
+        message : `Otp sent successfull to ${email}`,
+        token : token
+    })
+})
+
+
+router.post('/verify-otp',async (req,res)=>{
+    const {userId , otp} = req.body;
+    const user = await User.findById({userId})
+    if(user){
+        const email = user.email
+        const isOtp = await verifyOTP(email,otp)
+        if(isOtp){
+            return res.status(200).json({
+                message : "otp successfully verified"
+            })
+        }else {
+            return res.status(401).json({
+                message : "invalid Otp"
+            })
+        }
+    }else{
+        return res.status(404).json({
+            message : "User not found"
+        })
+    }
 
 })
 // Routes for Social Login
