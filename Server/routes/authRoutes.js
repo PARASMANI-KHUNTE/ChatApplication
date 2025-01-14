@@ -193,7 +193,7 @@ router.post('/forgot-password',async(req,res)=>{
 
 router.post('/verify-otp',async (req,res)=>{
     const {userId , otp} = req.body;
-    const user = await User.findById({userId})
+    const user = await User.findById(userId)
     if(user){
         const email = user.email
         const isOtp = await verifyOTP(email,otp)
@@ -213,6 +213,44 @@ router.post('/verify-otp',async (req,res)=>{
     }
 
 })
+
+router.put('/update-password', async (req, res) => {
+    const { userId, password } = req.body;
+
+    // Validate the input
+    if (!userId || !password) {
+        return res.status(400).json({
+            message: "userId and password are required",
+        });
+    }
+
+    try {
+        const hashedPassword = await hassPassword(password);
+      
+        // Find the user by ID and update the password
+        const user = await User.findByIdAndUpdate(
+            userId,
+            { password: hashedPassword },
+            { new: true } // Return the updated document
+        );
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+            });
+        }
+
+        return res.status(200).json({
+            message: "Password updated successfully",
+        });
+    } catch (error) {
+        console.error("Error updating password:", error.message);
+        return res.status(500).json({
+            message: "Internal server error",
+        });
+    }
+});
+
 // Routes for Social Login
 // router.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 // router.get("/auth/google/callback", passport.authenticate("google", { failureRedirect: "/" }),

@@ -5,9 +5,8 @@ require('dotenv').config();
 const otpStore = new Map(); // Maps email to OTP
 
 const sendOTP = async (email) => {
-  // Generate a random 6-digit OTP
-  const OTP = Math.floor(Math.random() * 900000) + 100000;
-
+ // Generate a random 4-digit OTP
+const OTP = Math.floor(Math.random() * 9000) + 1000;
   // Configure Nodemailer transporter with your email provider's credentials
   const transporter = nodemailer.createTransport({
     service: 'gmail',
