@@ -8,7 +8,7 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
 const LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
-
+const User = require('./models/User')
 // Load environment variables
 dotenv.config();
 
@@ -31,13 +31,12 @@ app.use(bodyParser.json());
 const db = require('./config/dbConfig');
 db();
 
-// Passport User Management
-const users = []; // In-memory user storage for demo purposes
+
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 passport.deserializeUser((id, done) => {
-  const user = users.find(u => u.id === id);
+  const user = User.find(u => u.id === id);
   done(null, user || null);
 });
 
